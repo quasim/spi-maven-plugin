@@ -1,0 +1,72 @@
+
+import java.io.*;
+import java.net.*;
+import bsh.BshClassManager;
+import org.apache.commons.exec.*;
+
+
+URL url = pathToFile( basedir.getAbsolutePath() + "/commons-exec-1.3.jar" ).toURL();
+this.caller.namespace.getClassManager().addClassPath( url );
+
+String version = "@version@";
+
+File file = new File( basedir, "dubbo-demo-spi/target/dubbo-demo-spi-" + version + "-spi.jar" );
+if ( !file.isFile() ) {
+	throw new FileNotFoundException( "Could not find generated JAR: " + file );
+}
+
+
+launchJar( path ) {
+	new Thread(new Runnable() {
+		public void run() {
+			CommandLine cmdLine = new CommandLine("cmd");
+			cmdLine.addArgument("/c");
+			cmdLine.addArguments("java -jar " + path);
+		
+			DefaultExecuteResultHandler resultHandler = new DefaultExecuteResultHandler();
+		
+			ExecuteWatchdog watchdog = new ExecuteWatchdog(60*1000);
+			Executor executor = new DefaultExecutor();
+			executor.setWorkingDirectory(basedir);
+			executor.setWatchdog(watchdog);
+			executor.execute(cmdLine, resultHandler);
+			resultHandler.waitFor();
+			
+			if ( executor.isFailure(resultHandler.getExitValue()) ) {
+				throw new RuntimeException("launch " + path + " failed." + resultHandler.getException());
+			}
+		}
+	}).start();
+}
+
+launchJar("dubbo-demo-provider/target/dubbo-demo-provider-" + version + ".jar");
+launchJar("dubbo-demo-consumer-complete/target/dubbo-demo-consumer-complete-" + version + ".jar");
+launchJar("dubbo-demo-consumer-incomplete/target/dubbo-demo-consumer-incomplete-" + version + ".jar");
+
+
+int[] port = new int[] { 5678, 1871, 3256, 14141, 41544, 41446 };
+
+int i = 0;
+
+while (i < port.length) {
+	try {
+		ServerSocket server = new ServerSocket(port[i]);
+		Socket client = server.accept();
+		BufferedReader in = new BufferedReader(new InputStreamReader(client.getInputStream()));
+		while (true) {
+			String str = in.readLine();
+			if (str != null) {
+				if (!"ok".equalsIgnoreCase(str))
+					throw new RuntimeException("dubbo test failed.");
+				break;
+			}
+		}
+		client.close();
+		server.close();
+		break;
+	} catch (IOException e) {
+		// Maybe Port already in use.
+		e.printStackTrace();
+	}
+	i++;
+}
