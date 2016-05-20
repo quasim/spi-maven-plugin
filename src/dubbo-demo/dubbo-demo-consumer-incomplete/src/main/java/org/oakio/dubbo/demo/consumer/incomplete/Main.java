@@ -29,7 +29,6 @@ public class Main {
 		
 		logger.info("consumer[incomplete] finished!");
 		
-		System.exit(0);
 	}
 
 }

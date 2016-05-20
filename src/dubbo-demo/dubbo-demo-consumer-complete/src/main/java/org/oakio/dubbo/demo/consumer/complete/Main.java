@@ -32,7 +32,6 @@ public class Main {
 		
 		logger.info("consumer[complete] finished!");
 		
-		System.exit(0);
 	}
 
 }
