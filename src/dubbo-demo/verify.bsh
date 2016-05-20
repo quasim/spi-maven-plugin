@@ -4,10 +4,6 @@ import java.net.*;
 import bsh.BshClassManager;
 import org.apache.commons.exec.*;
 
-
-URL url = pathToFile( basedir.getAbsolutePath() + "/commons-exec-1.3.jar" ).toURL();
-this.caller.namespace.getClassManager().addClassPath( url );
-
 String version = "@version@";
 
 File file = new File( basedir, "dubbo-demo-spi/target/dubbo-demo-spi-" + version + "-spi.jar" );
