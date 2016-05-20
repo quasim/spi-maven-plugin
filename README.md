@@ -71,3 +71,5 @@ maven工程插件配置：
 使用jd-gui反编译class：<br>
 ![](https://raw.githubusercontent.com/quasim/spi-maven-plugin/master/screenshot/2.png)<br>
 
+## Changelist
+v1.1 使用qdox替换jdk自带的javadoc解析工具。<br>
