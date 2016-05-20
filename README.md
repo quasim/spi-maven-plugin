@@ -68,6 +68,6 @@ maven工程插件配置：
 ```
 运行mvn package，查看构建目录：<br>
 ![](https://raw.githubusercontent.com/quasim/spi-maven-plugin/master/screenshot/1.png)<br>
-用jd-gui反编译class：<br>
+使用jd-gui反编译class：<br>
 ![](https://raw.githubusercontent.com/quasim/spi-maven-plugin/master/screenshot/2.png)<br>
 
