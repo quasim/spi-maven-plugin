@@ -54,7 +54,7 @@ maven工程插件配置：
 <plugin>
 	<groupId>org.oakio</groupId>
 	<artifactId>spi-maven-plugin</artifactId>
-	<version>1.0</version>
+	<version>1.1</version>
 	<executions>
 		<execution>
 			<id>generate-spi</id>
